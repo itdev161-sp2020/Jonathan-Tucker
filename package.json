@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r esm server.js",
-    "server": "nodemon -r esm server.js"
+    "server": "nodemon -r esm server.js",
+    "idk": "concurrently \"echo cmd1\" \"echo cmd2\"",
+    "client": "npm run start --prefix my-app",
+    "dev": "concurrently \" npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -19,8 +22,10 @@
   },
   "homepage": "https://github.com/tuckej18/161-Jonathan-Tucker#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.0",
+    "cors": "^2.8.5",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
@@ -28,6 +33,6 @@
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.3"
   }
 }
