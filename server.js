@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 import User from './models/User';
-import auth from './my-app/src/middleware/auth';
+import auth from './middleware/auth';
 
 
 // Initialize express application
@@ -38,9 +38,13 @@ res.send('http get request sent to root api endpoint')
  */
 app.post('/api/users',
 [
-    check('name', 'Please enter your name'). not().isEmpty(),
+    check('name', 'Please enter your name')
+    . not()
+    .isEmpty(),
     check('email', 'Please enter a valid email').isEmail(),
-    check('password', 'Please enter a password with 6 or more characters').isLength({min: 6})
+    check('password', 
+    'Please enter a password with 6 or more characters')
+    .isLength({min: 6})
 ],
 
 async (req, res) => {
@@ -50,6 +54,7 @@ async (req, res) => {
     } else {
         const {name, email, password} = req.body;
         try{
+
         let user = await User.findOne({email: email});
         if (user) {
             return res
@@ -63,14 +68,13 @@ async (req, res) => {
     });
 
     
-const salt = await bcrypt.genSalt(10);
-user.password = await bcrypt.hash(password, salt);
-
-await user.save();
-res.send('User successfully registered');
+app.get('/api/auth', auth, async (req, res) => {
+try {
+const user = await User.findById(req.user.id);
+res.status(200).json(user);
     }catch (error){
-        res.status(500).send('Server error');
+        res.status(500).send('server error');
     }
+    
   }
-}
 );
